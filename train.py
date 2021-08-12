@@ -24,7 +24,11 @@ def fit_model(features, labels, test, epochs):
     model.add(Dense(units=3,activation='softmax'))
     model.compile(optimizer='adam',
                   loss='categorical_crossentropy',metrics=['accuracy'])
+    
+    # Callbacks
     early_stop = EarlyStopping(patience=10)
+    
+    # Fitting models
     model.fit(x=features, 
           y=labels, 
           epochs=epochs,
@@ -46,11 +50,14 @@ def main(args):
     ############
     #Preprocessing data
     ############
-    X = df.drop(['Species'],axis=1)
-    y = df['Species']
+    X = df.drop(['Species'],axis=1)     # Drop label column
+    y = df['Species']                   # Set label
     encoder = LabelBinarizer()
     y = encoder.fit_transform(y)
+    
+    # Train-Test split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    
     scaler = MinMaxScaler() #scaling X data before model training
     scaler.fit(X_train)
     scaled_X_train = scaler.transform(X_train)
